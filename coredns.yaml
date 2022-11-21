@@ -1,0 +1,23 @@
+
+global:
+  external:
+    # fqdn of this cluster, this has to be unique
+    # if your local clustername is <mycluster>.nautilino.nightshift2.local, change it to
+    # "<mycluster>.<external-domain>, for testing we are using external-domain: nautilus-lab-ns.com
+    # also change domainFilters config of external-dns if you change <external-domain> part
+    host: "vermin.sm.sdp.hop.lab.emc.com" #"<cluster-name>.nautilus-lab-ns.com"
+    clusterName: "vermin" #"<cluster-name>" @TODO: change this
+
+external-dns:
+  provider: coredns
+  coredns:
+    etcdEndpoints: "http://10.243.86.17:2379"
+    extraArgs: ['--source=ingress','--source=service','--provider=coredns','--log-level=debug']
+  rbac:
+    create: true
+    apiVersion: v1
+  registry: "txt"
+  policy: sync
+  domainFilters: [sm.sdp.hop.lab.emc.com]
+  logLevel: debug
+

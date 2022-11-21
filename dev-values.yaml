@@ -1,0 +1,92 @@
+global:
+  devel: true
+  external:
+    ## For now we are disabling srs registration because our test instance
+    #  is pretty flaky and we need to update DECKS/KAHM
+    darksite: true
+
+# cluster monitoring
+cluster-monitoring:
+  kahmWebhook:
+    replicas: 1
+  alertmanager:
+    replicaCount: 1
+  server:
+    replicaCount: 1
+psearch-operator:
+  deployMode: "SDP"
+  #cert-manager-resources:
+  #verifyCertificateIssuing:
+  # skip: true
+pravega-cluster:
+        #controllerExtServiceType: LoadBalancer
+  pravega_externalAccess:
+    enabled: true
+    type: LoadBalancer
+  pravega_storage:
+    tier2:
+      size: 250Gi
+      class_name: "nfs"
+      #schema-registry:
+      #replicas: 1
+      #pravega-cluster:
+      #pravega_externalAccess:
+      #enabled: true
+      #type: LoadBalancer
+      #pravega_replicas:
+      #controller: 2
+      #segment_store: 3
+      #pravega_container_count: 8 
+#pravega-cluster:
+#   pravega_resources:
+#     controller:
+#       limits:
+#         cpu: 500m
+#         memory: 1Gi
+#       requests:
+#         cpu: 250m
+#         memory: 512Mi
+#     segment_store:
+#       limits:
+#         cpu: 1000m
+#         memory: 2Gi
+#       requests:
+#         cpu: 500m
+#         memory: 1Gi
+#   segment_store_jvm_options:
+#     - "-Xmx1g"
+#     - "-XX:MaxDirectMemorySize=1536m"
+#   segment_store:
+#     cacheMaxSize: "402653184"
+#   pravega_replicas:
+#     segment_store: 1
+
+# bookkeeper-cluster:
+#   replicas: 3
+#   resources:
+#     limits:
+#       cpu: 1000m
+#       memory: 2Gi
+#     requests:
+#       cpu: 500m
+#       memory: 1Gi
+#   jvmOptions:
+#     memoryOpts:
+#       - "-Xms500m"
+#       - "-XX:MaxDirectMemorySize=1g"
+keycloak:
+  secrets:
+    admin-creds:
+      stringData:
+        user: admin
+        password: adminPa$$word123
+    desdp-creds:
+      stringData:
+        user: desdp
+        password: adminPa$$word123
+
+sdp-serviceability:
+  decks:
+    supportStore:
+      username: admin
+      password: ChangeMe

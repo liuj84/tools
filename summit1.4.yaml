@@ -1,0 +1,549 @@
+global:
+  # Type of External storage, valid values are nfs or ecs_s3
+  # If nfs then a "nfs-client-provisioner" section is required
+  # If ecs_s3 then a "pravega-cluster" section is required
+  # storageType: nfs
+  external:
+    # fqdn of this cluster, this has to be unique
+    # if your local clustername is <mycluster>.nautilino.nightshift2.local, change it to
+    # "<mycluster>.<external-domain>, for testing we are using external-domain: nautilus-lab-ns.com
+    # when host and clusterName are updated please update domainFilters and txtOwnerId in external-dns section
+    host: "" #"<cluster-name>.nautilus-lab-ns.com"
+    clusterName: "" #"<cluster-name>" @TODO: change this
+    flat: true
+    uiHostName: "ui"
+    tls: true
+    certManagerIssuerName: selfsigned-ca-issuer
+
+  tlsCABundle:
+    ecsObject: |-
+      -----BEGIN CERTIFICATE-----
+      MIIDnDCCAoSgAwIBAgIJAOlxdGLbM3vBMA0GCSqGSIb3DQEBCwUAMBYxFDASBgNV
+      BAMTC0RhdGFTZXJ2aWNlMB4XDTIwMDIxOTE5MzMzNVoXDTMwMDIxNjE5MzMzNVow
+      FjEUMBIGA1UEAxMLRGF0YVNlcnZpY2UwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+      ggEKAoIBAQCkoWBf19IjV5NA0wBF12R4E4q4BhU7awLm9uJLdqhrt7fpPZxA6w9S
+      Gsv3rXGpXiBC/NWMp7Mb4+dbIITdcbPhdMzFC7vmdqUAnEqPQv4Nf46+LBnyCCkg
+      aqpGWZSiTT9V1Cgp5viMRm/eoFb8uQArrpT3jtzRhJi1HlLy/kYm9lZIIj6D9/6b
+      114GGtWEe7oa3a6lRwkGx9ffeX0VKX8kbcT/6YSe3pgSD5uhlVYVoMZlWjEM+oFO
+      5mp9HbX8o0Uor66gDj9d3PpFwEfNGjsNOPlnOQwL+Yy8XNuIY2AsdNMFzVYBMP7E
+      I3GgQpCQleyPRPQg1lvcNKWG/M5t5tvLAgMBAAGjgewwgekwHwYDVR0jBBgwFoAU
+      Kq7Wt0VUivNZ+MR+HOOj1CVRBMQwgaYGA1UdEQSBnjCBm4Ifc2FuZHktY2VsZXN0
+      aWFsLmVjcy5sYWIuZW1jLmNvbYcECvNWQoIfcHJvdm8tY2VsZXN0aWFsLmVjcy5s
+      YWIuZW1jLmNvbYcECvNWQIIfb2dkZW4tY2VsZXN0aWFsLmVjcy5sYWIuZW1jLmNv
+      bYcECvNWRoIeb3JlbS1jZWxlc3RpYWwuZWNzLmxhYi5lbWMuY29thwQK81ZEMB0G
+      A1UdDgQWBBQqrta3RVSK81n4xH4c46PUJVEExDANBgkqhkiG9w0BAQsFAAOCAQEA
+      l0GNe3hOPNm7NlD8np+LYazUng5G+vQZ26wfX5GvYfywKip+OaYpvp8DmtPWx/51
+      iP6A5QR3obFqlc4ntRSjfTq1Z8lYK8KlJ6JqvtgVBd28KEjn+Dpnb+wERGB7cJ79
+      z4Rzxkj7HG1FrYbcmUft5DUFUsAEtX1LMheR2HK8PmHerD8xUOsBzcQms+UoIms0
+      86Ku9VFS6ikXTI83Q1ja8batgaaSP0vOD1I+ISho/pwPTJF6/j6gzgVcpPiGKtgY
+      yvGg5L8BUfhNLEOWmAPMSRHQUNPJVFlUBuq/u1DHBDf4SBE+GAH6GwPEO6kE57sz
+      /b9eo74I0660XCqYYUaTHQ==
+      -----END CERTIFICATE-----
+    sdp: |-
+      -----BEGIN CERTIFICATE-----
+      MIIDKDCCAhCgAwIBAgIJAPRFDY5OGSzAMA0GCSqGSIb3DQEBCwUAMCkxJzAlBgNV
+      BAMMHm9jcDMubWFob3Uuc2RwLmhvcC5sYWIuZW1jLmNvbTAeFw0yMTA3MjcxMzM1
+      MTVaFw0zMTA3MjUxMzM1MTVaMCkxJzAlBgNVBAMMHm9jcDMubWFob3Uuc2RwLmhv
+      cC5sYWIuZW1jLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJIz
+      GWPe9lwT/V7SzlSo/BFudoR2zeJ0SMuB/YmHd24oO0FV/j6T3dCAmxQqf8GlVSkL
+      RjOQYoe7pYCnDHVmd0veHGsCSfoMhZZQrM+3bHsfXqGkhaPWIX+JGhnwv1AeSyk8
+      GjF8qFfKVj7miGJT5T9IJZ1hdX516mzqll96BXgj3+1Glyj3MsBdwm30qGlZUKXy
+      Hv72Hud0kA9I6+CYvBv1UtMB/qNMa1fgipwgopyQgK05TO6oKLQlY9ajag/bnAEH
+      mag8oja0LoHp7esqtqZ45aHKcJKw7CBeIEDUGzJk8BplrG8w+jsP0A3dvsVn+ewR
+      8kAfDCcdgpCVIb65dFcCAwEAAaNTMFEwHQYDVR0OBBYEFMT6d/hmIZGONiIcd3ol
+      5Fi++SY+MB8GA1UdIwQYMBaAFMT6d/hmIZGONiIcd3ol5Fi++SY+MA8GA1UdEwEB
+      /wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAIxfNo4W4pxUoApyb9cTf+I1y9Xa
+      0rN4NkI4FUGs5WgwC+NyR/oYvEOB25uCOVV6qlYVLVi/JNys+reEYR0mYlr1I3t/
+      wBOoRg6cn5vkctyDNTZWfGVabOx9GhsAeaX0HXllpq+yKNV84uWQgBQ0GBoPkBQ/
+      5HUflZkYxu+h9l5zYTWbcIqLES4nzzaTW9YTdFgk6APmn6xlZ78OHIvyTY7DmwrL
+      ldkSI11i7LetEtR8pZiWQ5i9rjVC3OS8FmRMTKA3nxl+aKF7oUwS/WrgVALC1EzW
+      qXvMdsF7giyp62h20hr0meUi/KKVn4jhhOCk2gYz97CXtAMgEG9erdfs6po=
+      -----END CERTIFICATE-----
+    internalCa: |-
+      -----BEGIN CERTIFICATE-----
+      MIIDbTCCAlWgAwIBAgIUOgtNlun2VkJR+Grk7dTs37IIAdAwDQYJKoZIhvcNAQEL
+      BQAwRjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAlJJMRMwEQYDVQQHDApDdW1iZXJs
+      YW5kMRUwEwYDVQQKDAxDaHJpcyBCIEluYy4wHhcNMjIwMzIxMjAzOTQ5WhcNMzIw
+      MzE4MjAzOTQ5WjBGMQswCQYDVQQGEwJVUzELMAkGA1UECAwCUkkxEzARBgNVBAcM
+      CkN1bWJlcmxhbmQxFTATBgNVBAoMDENocmlzIEIgSW5jLjCCASIwDQYJKoZIhvcN
+      AQEBBQADggEPADCCAQoCggEBANVfqc/1OqceLX8LBok1PhY13pctLQvFJ1K0/s8Q
+      lt8esi3UoDJPHmPAGcrPB8Vpbe//+QRUyRKkjzCEC8QyfYERHl657fCUbZQGfgew
+      ngW4FZBoROWKT/WxdNj0jWxLlWev+OFQ6gGJ5GNYrqBTL8dT3ZDGMFZaAetgWCoB
+      yAXg7oEH8LZJafMpINIFa0u0tBlIkk/qLwTX4HpB7dwevgO4BJnJXFKjrH//1+np
+      Ahrgzsn2r7s5uetTetcyFcoi05x2lgbJQgJ+gu/WtptbSYyR0ffUzDuQyUFbbhJK
+      GqzmPysr54GNNHM1PRMV9ysnSfrwFGqnkqa2o+NC+6JKsCsCAwEAAaNTMFEwHQYD
+      VR0OBBYEFDSieW2IBtptlspQPjuFvSogRlKKMB8GA1UdIwQYMBaAFDSieW2IBtpt
+      lspQPjuFvSogRlKKMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+      ALHckIgYisC2SLn9UJThFVPl05J2583yZPTO9vjYfgYEMQOMbujHO8kDFNxdppzR
+      A3dN2X3GXzm2nfBKfxE6GVb6aivZrEvkYjR+VmUcLUVoMXIHWeDIuy1bhbdadyHu
+      hWke71z7bC88epr3AjiZy35DBKJNT9tTjSwDBTgUREBMYKfPaCfAS2sXqEI6lBQZ
+      17DbE1/mVmQPTId7+4LzJUckKTgxof3Z2bksKCok3JVkrOW2LaKgzUs5aaMVZGtl
+      Dx6tNEMk1dJ4Y98fTVXD9NFUFx6tJj15JygSl9extGKW/OSfbrXunHadluAEUmDG
+      v6G4q8tt7v2Dj/59v2s9M0w=
+      -----END CERTIFICATE-----
+      #List of KAHM notifiers shipped with SDP: [nautilus-notifier, snmp-notifier, ese-notifier]
+  kahmNotifiers: [ ]
+
+pravega-cluster:
+  pravega_externalAccess:
+    enabled: true
+    type: LoadBalancer
+  pravega_replicas:
+    controller: 3
+    segment_store: 3
+  pravega_container_count: 8  #8 containers per segmentstore
+
+  ecs_s3:
+    uri: "http://172.16.107.16:9020"
+    bucket: nightshift-pravega
+    namespace: sdp-nightshift
+    prefix: /nightshift
+    accessKey: nightshift-object-user
+    secretKey: WznjiHNtzKIGCLStiLO7DX1ZSRQ9mdfyoCivQLNb
+    useUniquePrefix: true
+
+nfs-client-provisioner:
+  nfs:
+    # DNS server 10.247.114.6 and 10.249.253.60 resolves this
+    server: shared-isilon.lab176.local
+    path: /ifs/shared/summit
+    mountOptions:
+       - nfsvers=4.0
+       - sec=sys
+       - nolock
+  storageClass:
+    archiveOnDelete: "false"
+
+# Connection to LAB 9 ECS Appliance (https://asdwiki.isus.emc.com:8443/pages/viewpage.action?pageId=133368369)
+ecs-service-broker:
+  namespace: sdp-nightshift
+  replicationGroup: RG2
+  defaultReclaimPolicy: Delete
+
+  api:
+    endpoint: "http://172.16.107.16:9020"
+
+  ecsConnection:
+    endpoint: "https://10.243.86.70:4443"
+    username: nightshift-sdp-mgmt-user
+    password: ChangeMe
+    certificate: |-
+      -----BEGIN CERTIFICATE-----
+      MIIDCTCCAfGgAwIBAgIJAN2xK1/JxqtWMA0GCSqGSIb3DQEBCwUAMBQxEjAQBgNV
+      BAMTCWxvY2FsaG9zdDAeFw0yMDA0MDMxNzMxMzdaFw0zMDA0MDExNzMxMzdaMBQx
+      EjAQBgNVBAMTCWxvY2FsaG9zdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+      ggEBAK3WzIazPOtzwV1z69Qx908fT2NTGq6B6Dy/H/JD4kflcXYvrwQZblwh2ROY
+      lO8ndpSJojNMppVdDxMQhEVIHnG6fT5KJYrpEM0xyMSqG6ccWXpJUbp7w39DqD9m
+      DTSnFWM5xXMhSNw76IFT0iHFkZcKHUJO9raOHZ78ixwxEVp3ABuAi6O3KXqRjF72
+      joCICIq3QBPafGEb6gt5a7P0fA7uyzxTdVSwIExzk665f0HA/nQ/EDRRr0jd2Wd+
+      eo86421Dj7yuFUcxwflQYmEavCbTxPfJSaNInayfkbonAQKoqXLFW1exZPw2Aogb
+      N7ArLWs2xUL5U6tNKv7STsMd/mECAwEAAaNeMFwwHwYDVR0jBBgwFoAUdAqy2Ru/
+      MuR13G3NeAWMe9294YswGgYDVR0RBBMwEYIJbG9jYWxob3N0hwR/AAABMB0GA1Ud
+      DgQWBBR0CrLZG78y5HXcbc14BYx73b3hizANBgkqhkiG9w0BAQsFAAOCAQEAWGen
+      Gew3ELTqo5Vg49tnwkNsalmn5j4UzbY4puzo5pMe3NdKgIDGphjC7q/AApiTPAW5
+      Hsi0TSvzhjtzklJdJ4JD1P7k4oyLL5TLxsZAN/RdDiIg0+kujXtePH9oall77rds
+      FTvLL4KahLkzXrlyQsVJ+J+MJfU2Y9OGHK3Ihf5Q2H9D8yi8uOd/3QPGCm5vp8Sm
+      znJhEs4SKA9sKmbjU+vENxeYDK6K2WAnpKidKadt4RrgwmDmDFNtkeAm5PTncqzj
+      obcT+9+VvwgZ6A+lJmyuufTr6O99w98WImaN0+xTEeUXiAtxmEPHTbsiChgtxCyo
+      7sJ08F0l+cDAWdk+hw==
+      -----END CERTIFICATE-----
+external-dns:
+  provider: coredns
+  coredns:
+    etcdEndpoints: "http://10.243.86.17:2379"
+    extraArgs: ['--source=ingress','--source=service','--provider=coredns','--log-level=debug']
+  rbac:
+    create: true
+    apiVersion: v1
+  registry: "txt"
+  txtOwnerId: "" #"<cluster-name>.ns.sdp.hop.lab.emc.com" #@TODO: change this
+  policy: sync
+  domainFilters: [] #["<cluster-name>.ns.sdp.hop.lab.emc.com"] #@TODO: change this
+  logLevel: debug
+
+
+cert-manager-resources:
+  verifyCertificateIssuing:
+    skip: true
+  clusterIssuer:
+    name: selfsigned-ca-issuer
+  internalCASecrets:
+  - name: tls.crt
+    value: |
+      -----BEGIN CERTIFICATE-----
+      MIIDbTCCAlWgAwIBAgIUOgtNlun2VkJR+Grk7dTs37IIAdAwDQYJKoZIhvcNAQEL
+      BQAwRjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAlJJMRMwEQYDVQQHDApDdW1iZXJs
+      YW5kMRUwEwYDVQQKDAxDaHJpcyBCIEluYy4wHhcNMjIwMzIxMjAzOTQ5WhcNMzIw
+      MzE4MjAzOTQ5WjBGMQswCQYDVQQGEwJVUzELMAkGA1UECAwCUkkxEzARBgNVBAcM
+      CkN1bWJlcmxhbmQxFTATBgNVBAoMDENocmlzIEIgSW5jLjCCASIwDQYJKoZIhvcN
+      AQEBBQADggEPADCCAQoCggEBANVfqc/1OqceLX8LBok1PhY13pctLQvFJ1K0/s8Q
+      lt8esi3UoDJPHmPAGcrPB8Vpbe//+QRUyRKkjzCEC8QyfYERHl657fCUbZQGfgew
+      ngW4FZBoROWKT/WxdNj0jWxLlWev+OFQ6gGJ5GNYrqBTL8dT3ZDGMFZaAetgWCoB
+      yAXg7oEH8LZJafMpINIFa0u0tBlIkk/qLwTX4HpB7dwevgO4BJnJXFKjrH//1+np
+      Ahrgzsn2r7s5uetTetcyFcoi05x2lgbJQgJ+gu/WtptbSYyR0ffUzDuQyUFbbhJK
+      GqzmPysr54GNNHM1PRMV9ysnSfrwFGqnkqa2o+NC+6JKsCsCAwEAAaNTMFEwHQYD
+      VR0OBBYEFDSieW2IBtptlspQPjuFvSogRlKKMB8GA1UdIwQYMBaAFDSieW2IBtpt
+      lspQPjuFvSogRlKKMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+      ALHckIgYisC2SLn9UJThFVPl05J2583yZPTO9vjYfgYEMQOMbujHO8kDFNxdppzR
+      A3dN2X3GXzm2nfBKfxE6GVb6aivZrEvkYjR+VmUcLUVoMXIHWeDIuy1bhbdadyHu
+      hWke71z7bC88epr3AjiZy35DBKJNT9tTjSwDBTgUREBMYKfPaCfAS2sXqEI6lBQZ
+      17DbE1/mVmQPTId7+4LzJUckKTgxof3Z2bksKCok3JVkrOW2LaKgzUs5aaMVZGtl
+      Dx6tNEMk1dJ4Y98fTVXD9NFUFx6tJj15JygSl9extGKW/OSfbrXunHadluAEUmDG
+      v6G4q8tt7v2Dj/59v2s9M0w=
+      -----END CERTIFICATE-----
+  - name: tls.key
+    value: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEogIBAAKCAQEA1V+pz/U6px4tfwsGiTU+FjXely0tC8UnUrT+zxCW3x6yLdSg
+      Mk8eY8AZys8HxWlt7//5BFTJEqSPMIQLxDJ9gREeXrnt8JRtlAZ+B7CeBbgVkGhE
+      5YpP9bF02PSNbEuVZ6/44VDqAYnkY1iuoFMvx1PdkMYwVloB62BYKgHIBeDugQfw
+      tklp8ykg0gVrS7S0GUiST+ovBNfgekHt3B6+A7gEmclcUqOsf//X6ekCGuDOyfav
+      uzm561N61zIVyiLTnHaWBslCAn6C79a2m1tJjJHR99TMO5DJQVtuEkoarOY/Kyvn
+      gY00czU9ExX3KydJ+vAUaqeSpraj40L7okqwKwIDAQABAoIBAEmGcGaHk1F49aZ8
+      byEipqVSpMQlPgt7QWSfl9pUVhjGZBGk3hrX5pnq3ThkhMIC5W45H17dtHfnGqxW
+      JBPUbijmdDeiDBrFmsjSP+V4d8tytoOPWoZaVdlM7/2+r2js1qvnGHTTw/8JvBh7
+      u5jlcWZXQNcdZBStaVHpXhgDiyBy06R+Rn3q0e61wIvzOilVjuWmBgOQ8bfCEYWK
+      CpZC3IORjWEjEXZ9tRpG6dy+pA3t0kdPzsWhEaiELjFI3nE1+Sh3XNbib28HpEQ9
+      DDPt0CYAo4gYScEZ7lP7qNNbKaQ0Vaeiy7tr+mRavixGNtAWSEujruiUtweHvFeL
+      Z6TOE9ECgYEA8+uCUIukWRUwz1M2wC1JB5TqCSxFPp06BkT8qVtxapjtzVgUOYRD
+      d1wQNReeUxcxXSXrSpP0StfQcPi8urIKeD9tw6wkN7eryYquGxw6L2OgF9JSeMiS
+      z0sFc/aL/U/IKW+lCvCSSinqbJ41qOi3ge9v8/MWAwpeSGr1ktzZKdkCgYEA3/Dh
+      ITOejKZWMEL9cHi29vgk8+27Hs5kDvhYQP8USv1aDvX6b+4AT1lrQMq8fNXA4FLY
+      E4ePiKekBKYvnr8I/hMm8BjKfZite3ILRrn/LDtG4135vZ4MtVLwf+gSzkHa1Iot
+      HzgkvFOYWKWGl4ghCZoHG/a0pnMs9A9kFDyTg6MCgYBht7TCLd9ObOXb+RtTDBFY
+      vzivKhQnjHdlcZfDBUY/jTqfbCzWCf25QKGhk2+zG/SDu6AyhWl13lW8HHoHVTJK
+      kCaaIEl2JNfmau9rHvjUaVYGlRTDHJ9r+kMZ/OiCN8cZioeVBWGl4nruvscCfxCd
+      Nl4kXfswhqPU4Ty2dFFvqQKBgA2tpeKkR4PpyQvrm5VaGjrdj0xC8hIAo0Xyz1kw
+      +2lVLkIJrkFV9TjjilSLzZWGbOCGzuHqfs7nBnKuP+xfWMpEGzXBHeUsBTSsE5o/
+      VCG8gSj0HYQCel488amuYC+vABHJWtY0VLIYHQ8VFTJ+Qx5WBSclG4WrNUy2//Lo
+      fE4nAoGAAptYVEPDVFHfx3KQhUi1z00IIGPIqwYKzXi/prlMBm+D0Wy2tnidUAEl
+      EiFW1KRj64uRRC7TKtX3Jz6odkk+RJfF+CfI973sQa+XD9NlyNG6o22+fjwu6E2r
+      YOr/Gt44cLc7X+RIMRSAfEMJjzDw1SvRkvYx5i9zpBN2qdGRTIE=
+      -----END RSA PRIVATE KEY-----
+
+  certManagerSecrets:
+    - name: tls.crt
+      value: |
+        -----BEGIN CERTIFICATE-----
+        MIIDKDCCAhCgAwIBAgIJAPRFDY5OGSzAMA0GCSqGSIb3DQEBCwUAMCkxJzAlBgNV
+        BAMMHm9jcDMubWFob3Uuc2RwLmhvcC5sYWIuZW1jLmNvbTAeFw0yMTA3MjcxMzM1
+        MTVaFw0zMTA3MjUxMzM1MTVaMCkxJzAlBgNVBAMMHm9jcDMubWFob3Uuc2RwLmhv
+        cC5sYWIuZW1jLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJIz
+        GWPe9lwT/V7SzlSo/BFudoR2zeJ0SMuB/YmHd24oO0FV/j6T3dCAmxQqf8GlVSkL
+        RjOQYoe7pYCnDHVmd0veHGsCSfoMhZZQrM+3bHsfXqGkhaPWIX+JGhnwv1AeSyk8
+        GjF8qFfKVj7miGJT5T9IJZ1hdX516mzqll96BXgj3+1Glyj3MsBdwm30qGlZUKXy
+        Hv72Hud0kA9I6+CYvBv1UtMB/qNMa1fgipwgopyQgK05TO6oKLQlY9ajag/bnAEH
+        mag8oja0LoHp7esqtqZ45aHKcJKw7CBeIEDUGzJk8BplrG8w+jsP0A3dvsVn+ewR
+        8kAfDCcdgpCVIb65dFcCAwEAAaNTMFEwHQYDVR0OBBYEFMT6d/hmIZGONiIcd3ol
+        5Fi++SY+MB8GA1UdIwQYMBaAFMT6d/hmIZGONiIcd3ol5Fi++SY+MA8GA1UdEwEB
+        /wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAIxfNo4W4pxUoApyb9cTf+I1y9Xa
+        0rN4NkI4FUGs5WgwC+NyR/oYvEOB25uCOVV6qlYVLVi/JNys+reEYR0mYlr1I3t/
+        wBOoRg6cn5vkctyDNTZWfGVabOx9GhsAeaX0HXllpq+yKNV84uWQgBQ0GBoPkBQ/
+        5HUflZkYxu+h9l5zYTWbcIqLES4nzzaTW9YTdFgk6APmn6xlZ78OHIvyTY7DmwrL
+        ldkSI11i7LetEtR8pZiWQ5i9rjVC3OS8FmRMTKA3nxl+aKF7oUwS/WrgVALC1EzW
+        qXvMdsF7giyp62h20hr0meUi/KKVn4jhhOCk2gYz97CXtAMgEG9erdfs6po=
+        -----END CERTIFICATE-----
+    - name: tls.key
+      value: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEowIBAAKCAQEAkjMZY972XBP9XtLOVKj8EW52hHbN4nRIy4H9iYd3big7QVX+
+        PpPd0ICbFCp/waVVKQtGM5Bih7ulgKcMdWZ3S94cawJJ+gyFllCsz7dsex9eoaSF
+        o9Yhf4kaGfC/UB5LKTwaMXyoV8pWPuaIYlPlP0glnWF1fnXqbOqWX3oFeCPf7UaX
+        KPcywF3CbfSoaVlQpfIe/vYe53SQD0jr4Ji8G/VS0wH+o0xrV+CKnCCinJCArTlM
+        7qgotCVj1qNqD9ucAQeZqDyiNrQugent6yq2pnjlocpwkrDsIF4gQNQbMmTwGmWs
+        bzD6Ow/QDd2+xWf57BHyQB8MJx2CkJUhvrl0VwIDAQABAoIBAGHKBCWlMSwNwt/2
+        KUS/cztFo8ienr/l//r/i9K95cis6FWfa1v4E9ou64vlkWa5a+j0PZSn8v/PJ7iS
+        A+dTDmCUxHVfJpQ2Y/RTKgQWMF16chW0sh8QT3+6+NZ5Db5NRQDjzrFjLEbsdBvG
+        n1sFusVFQMOwOKLJxG/tyX87YwUkFwhIyxzO0OezW/N7P97FNCYJwugHAt7gUg2G
+        Lv6zMa/bOVlzm+9weswedau/p1x39JiNyVWi1FsBTkHDTpXzZ/cGup1QbOQKUxH5
+        MxjI5ABI3596xrM050RHaOchBOkoPRRVqX3L5q1nJ4Z9mRgCguotqIWugCja0F9b
+        G2XrXoECgYEAwq4KQOCvDgZUDq18nlb7UGTXPKyhtuE720TYatOeCi4eAMtjNMK1
+        vn2xn7GD/WzfFpBsqY2Yvk1mobLFgqg9AZwCsrcuqa/O/v8WrSAiTQydHf4DsIlQ
+        dCUSrwU83/cviQfJ3SPA5IG5hMKyYeTgs/JHT9ePwP2YdLhT/+vAdBECgYEAwD/e
+        D3gudgcHvfGHdemBL+mofFKBYWEMkvp3QIaZ19L+0JbVZUuq3k0tG8WyGEGFQh4X
+        9mc56zhL0h+nJYLYbkbwed/eDAeWxZ6NPM9yq++bco+yQDk+TV3PiPmQktdWuVew
+        3p8yq0//QAZMU24pQaZwwOWWSnEZo3mUiKvaKecCgYAbuhnvv5BvGOuj44WaL50/
+        h/03wQaPO2kBA78nB9i8bnELf+wzOYAVD2Xa7rdzwqvLVOqFA4u7nt59LS8AOuHl
+        dsjTl09oD4gVvVMHeUopWyCNgv4XiJcS06zjjIVtCJGWnKtdeZghc3BuviQV2Tk/
+        p8QMVRE+VV//T7l2+6a/YQKBgQCzYiSyrII1sSOhMWAjPqlDarPCpT2B/os8Dab+
+        N1oPTxpiyYr+hJc/7CU9977Q8ToFUo0rZnBdsd7VhqFw1+FZLKowHhpTgTVG2kWR
+        S0QFeILEZ558XK1shS8j8THcQj/ymwc3ArbFsNRMClRnuK+YSVSGOPN+LIAu0EAv
+        MqNTWwKBgCL/t8aOcHMNXHawXHHo+p2Z11rZFwtMCy0jcRUZsZAQ2sTQC6DIjiKw
+        5eOW8BVweZMGfj/FFP/t0Olhs0bizAJBpUEaz9ue3F/UUkSV6aI8IOOY7Jbh3FSC
+        3yvvwn5ybZgC2mNfRZzSIYwPsxKr7sfinOw1Q+4nPaQEYWQbb38o
+        -----END RSA PRIVATE KEY-----
+cert-manager:
+  webhook:
+    enabled: false
+  ingressShim:
+    defaultIssuerName: selfsigned-ca-issuer
+    defaultIssuerKind: ClusterIssuer
+  extraArgs: ['--dns01-recursive-nameservers-only=true']
+
+keycloak:
+  postgresql:
+    persistence:
+      size: 6Gi
+  replicas: 3
+  secrets:
+    admin-creds:
+      stringData:
+        user: admin
+        password: adminPa$$word123
+    desdp-creds:
+      stringData:
+        user: desdp
+        password: adminPa$$word123
+    egress:
+      enabled: false  
+
+
+sdp-serviceability:
+  supportassist: #https://connectivitykeyprovider.cft.isus.emc.com/accessCodes if you want to look or make a new one
+    accessKey: 110F59C4
+    pin: 1234
+    siteID: 123456
+
+  decks:
+    helmTestConfig:
+      srsGateway:
+        login: esrstest@arrow.com:Password1
+        hostname: 10.249.238.219
+
+  dellemc-streamingdata-license:
+    licensefile: |-
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!--Copyright (c) 2010-2020 EMC Inc. All Rights Reserved.--><EMCLicense version="1.0">
+          <ActivationInfo>
+              <ActivationId>3679523</ActivationId>
+              <ActivationDate>May 15, 2020 03:50:35 PM</ActivationDate>
+              <ActivatedBy>Eddie Pavkovic</ActivatedBy>
+              <ActivationType>ACTIVATE</ActivationType>
+              <ActivationCompany>ACTIVATED TO 105304 SDP Engineering USA</ActivationCompany>
+              <ActivationSite>ACTIVATED TO License Site Number: 35033928</ActivationSite>
+              <Issuer>EMC</Issuer>
+              <IssueDate>15-May-2020</IssueDate>
+          </ActivationInfo>
+          <MachineInfo>
+              <MachineName>SDP_system_1</MachineName>
+              <SoftwareIds>
+                  <SoftwareId plc="STRM">ELMSTR101943WM</SoftwareId>
+              </SoftwareIds>
+              <LockingIds/>
+          </MachineInfo>
+          <LicenseKeys>
+              <LicenseKey version="1.0">
+                  <FeatureCode>STRM_FLINK_CORES</FeatureCode>
+                  <FeatureName>Streaming Flink Cores</FeatureName>
+                  <LicenseType>SUBSCRIPTION</LicenseType>
+                  <CustomProperties>
+                      <CustomProperty>
+                          <key>PLC</key>
+                          <value>STRM</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCT_LINE</key>
+                          <value>Streaming Data Platform</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>FEATURE_NAME</key>
+                          <value>Streaming Flink Cores</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_CODE</key>
+                          <value>ZC</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_NAME</key>
+                          <value>Individual CPU Core</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCTSHORTNAME</key>
+                          <value>STREAMINGDATA</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>QTY</key>
+                          <value>100</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>TYPE</key>
+                          <value>SUBSCRIPTION</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>START_DATE</key>
+                          <value>15-May-2020</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>END_DATE</key>
+                          <value>13-Nov-2022</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>GRACE_PERIOD</key>
+                          <value>27-Nov-2022</value>
+                      </CustomProperty>
+                  </CustomProperties>
+              </LicenseKey>
+              <LicenseKey version="1.0">
+                  <FeatureCode>STRM_PSEARCH_CORES</FeatureCode>
+                  <FeatureName>Streaming PSearch Cores</FeatureName>
+                  <LicenseType>SUBSCRIPTION</LicenseType>
+                  <CustomProperties>
+                      <CustomProperty>
+                          <key>PLC</key>
+                          <value>STRM</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCT_LINE</key>
+                          <value>Streaming Data Platform</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>FEATURE_NAME</key>
+                          <value>Streaming PSearch Cores</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_CODE</key>
+                          <value>ZC</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_NAME</key>
+                          <value>Individual CPU Core</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCTSHORTNAME</key>
+                          <value>STREAMINGDATA</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>QTY</key>
+                          <value>50</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>TYPE</key>
+                          <value>SUBSCRIPTION</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>START_DATE</key>
+                          <value>15-May-2020</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>END_DATE</key>
+                          <value>14-Oct-2022</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>GRACE_PERIOD</key>
+                          <value>28-Oct-2022</value>
+                      </CustomProperty>
+                  </CustomProperties>
+              </LicenseKey>
+              <LicenseKey version="1.0">
+                  <FeatureCode>STRM_SPARK_CORES</FeatureCode>
+                  <FeatureName>Streaming Spark Cores</FeatureName>
+                  <LicenseType>SUBSCRIPTION</LicenseType>
+                  <CustomProperties>
+                      <CustomProperty>
+                          <key>PLC</key>
+                          <value>STRM</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCT_LINE</key>
+                          <value>Streaming Data Platform</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>FEATURE_NAME</key>
+                          <value>Streaming Spark Cores</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_CODE</key>
+                          <value>ZC</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_NAME</key>
+                          <value>Individual CPU Core</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCTSHORTNAME</key>
+                          <value>STREAMINGDATA</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>QTY</key>
+                          <value>100</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>TYPE</key>
+                          <value>SUBSCRIPTION</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>START_DATE</key>
+                          <value>15-May-2020</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>END_DATE</key>
+                          <value>13-Nov-2022</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>GRACE_PERIOD</key>
+                          <value>27-Nov-2022</value>
+                      </CustomProperty>
+                  </CustomProperties>
+              </LicenseKey>
+              <LicenseKey version="1.0">
+                  <FeatureCode>STRM_CORES</FeatureCode>
+                  <FeatureName>Streaming Platform Cores</FeatureName>
+                  <LicenseType>SUBSCRIPTION</LicenseType>
+                  <CustomProperties>
+                      <CustomProperty>
+                          <key>PLC</key>
+                          <value>STRM</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCT_LINE</key>
+                          <value>Streaming Data Platform</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>FEATURE_NAME</key>
+                          <value>Streaming Platform Cores</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_CODE</key>
+                          <value>ZC</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_NAME</key>
+                          <value>Individual CPU Core</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCTSHORTNAME</key>
+                          <value>STREAMINGDATA</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>QTY</key>
+                          <value>50</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>TYPE</key>
+                          <value>SUBSCRIPTION</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>START_DATE</key>
+                          <value>15-May-2020</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>END_DATE</key>
+                          <value>14-Oct-2022</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>GRACE_PERIOD</key>
+                          <value>28-Oct-2022</value>
+                      </CustomProperty>
+                  </CustomProperties>
+              </LicenseKey>
+          </LicenseKeys>
+      <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2002/06/xmldsig-filter2"><XPath xmlns="http://www.w3.org/2002/06/xmldsig-filter2" Filter="intersect">//ActivationInfo|//MachineInfo|//LicenseKeys</XPath></Transform></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>zSaZmFjeXcll9WvD0M0QZlifdVU5OUeFrPkR5E/S8mJazi3hPutLiKCeq5SKb5gWBNc6o1KCXa9E
+      Yd4fVH5t7g==</DigestValue></Reference></SignedInfo><SignatureValue>XvMjLxJxp6aM14l3/KV7dX9OfELH93hYk82JNiVoprZtP9BZDCk66zqeurYIlnn5E4b4Y7tvozs4
+      piZnI78nDqQOudoyw1zZ5Zo70Thn/zykeDbnQFYKt1zj+ZKimNbf5EcfifpSGJwuXs6secPqKp8S
+      5dbve+xMGqna0Om8iJYtdlwVz0n7x4w8lfJRO2JQaTXsrJ0tbaP+qjgVd25aUWJrwxCT3UDGV6z8
+      q460NkyGxChsh9/tcTNulEiBFr/boZ65Bdj+xMb0YFE0/ZBeFQ3YxCA04OejwWki3zm1GUtxNLWl
+      b7pjHGzg7CH4Jm/zvbx1sTmPOnQ/o1WImrQSnQ==</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>nrou2Rji7a4aFE6Bjf4+RpuiL7oFxLpFb043whp8w10fSgh75LYyGkJ9B95fSotHEOQlou5soYjV
+      rOBjioXGWuVybMid7tF5lyNs3zWrXkVcIvrcmwNTIrs+chPmntu5qDP89A1vslRGzbHrBHQdzX5P
+      lN5wcXVlXoU3E1LUsU4Lzk/GXX1FLCodbGDOVMN6/WNHJRaDts/tKacJuFhyuNc90fjyQkhb4buv
+      P2nJDn8P14kpvkc15HNsm3/Wa+jsJUBfLeZCJOOvZbUiB7n/MSDPgNUBboUGxXacTgYZyUSzk1jR
+      7qwzIrdcWq/vIgAsWBVr9DhckLagmq+Rq7xhBw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue></KeyInfo></Signature></EMCLicense>

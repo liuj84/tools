@@ -1,0 +1,52 @@
+global:
+  devel: true
+  external:
+    darksite: true
+
+pravega-cluster:
+  pravega_resources:
+    controller:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+    segment_store:
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+  segment_store_jvm_options:
+    - "-Xmx1g"
+    - "-XX:MaxDirectMemorySize=1536m"
+  segment_store:
+    cacheMaxSize: "402653184"
+  pravega_replicas:
+    segment_store: 1
+
+bookkeeper-cluster:
+  replicas: 3
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  jvmOptions:
+    memoryOpts:
+      - "-Xms500m"
+      - "-XX:MaxDirectMemorySize=1g"
+
+keycloak:
+  keycloak:
+    password: password
+    DESDPPassword: password
+
+decks:
+  supportStore:
+    username: admin
+    password: ChangeMe

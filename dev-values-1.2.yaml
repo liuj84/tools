@@ -1,0 +1,23 @@
+  
+global:
+  devel: true
+  external:
+    ## For now we are disabling srs registration because our test instance
+    #  is pretty flaky and we need to update DECKS/KAHM
+    darksite: true
+cluster-monitoring:
+  skip: true
+nginx-ingress:
+  controller:
+    config:
+      hsts: "false"
+      hsts-include-subdomains: "false"
+keycloak:
+  keycloak:
+    password: password
+    DESDPPassword: password
+
+decks:
+  supportStore:
+    username: admin
+    password: ChangeMe

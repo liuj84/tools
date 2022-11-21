@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: taxifood
+  namespace: ps
+spec:
+  manualSelector: true
+  selector:
+    matchLabels:
+      app: taxifood
+  parallelism: 1
+  template:
+    metadata:
+      name: taxifood
+      labels:
+        app: taxifood
+    spec:
+      serviceAccountName: ps-psearch
+      restartPolicy: Never
+      containers:
+        - name: taxifood
+          image: devops-repo.isus.emc.com:8116/miy/psearch/dogfoodcq:0.10.0
+          command:  [ "/bin/bash", "-c",
+                      "bzip2 -d /home/data/nyc_taxi.json.bz2;java -jar dogfoodRefined-0.0.1-SNAPSHOT.jar --streamName=pret2 --indexName=pret2 --eventCount=55115564 --continueTime=0 --sleepInterval=1 --segmentCount=2 --threadNum=10 --enableQuery=false --dataSource=fileSystem:/home/data/nyc_taxi.json --mappingFile=/home/mapping/taxi.json --searchServerEndPoint=http://psearch-resthead-headless:9098;tail -f /dev/null;"
+          ]
+          envFrom:
+            - configMapRef:
+                name: psearch-indexworker-configmap
+            - configMapRef:
+                name: project-config
+          env:
+            - name: REST_AUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rest-auth-secret
+                  key: username
+            - name: REST_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rest-auth-secret
+                  key: password

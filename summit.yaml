@@ -1,0 +1,308 @@
+global:
+  # Type of External storage, valid values are nfs or ecs_s3
+  # If nfs then a "nfs-client-provisioner" section is required
+  # If ecs_s3 then a "pravega-cluster" section is required
+  storageType: nfs
+  external:
+    # fqdn of this cluster, this has to be unique
+    # if your local clustername is <mycluster>.nautilino.nightshift2.local, change it to
+    # "<mycluster>.<external-domain>, for testing we are using external-domain: nautilus-lab-ns.com
+    # also change domainFilters config of external-dns if you change <external-domain> part
+    host: "" #"<cluster-name>.nautilus-lab-ns.com"
+    clusterName: "" #"<cluster-name>" @TODO: change this
+    tls: false
+    certManagerIssuerName: letsencrypt-production
+  #List of KAHM notifiers shipped with SDP: [nautilus-notifier, streamingdata-snmp-notifier, streamingdata-supportassist-ese]
+  kahmNotifiers: [ ]
+
+  tlsCABundle:
+    ecsObject: |-
+      -----BEGIN CERTIFICATE-----
+      MIIDnDCCAoSgAwIBAgIJAOlxdGLbM3vBMA0GCSqGSIb3DQEBCwUAMBYxFDASBgNV
+      BAMTC0RhdGFTZXJ2aWNlMB4XDTIwMDIxOTE5MzMzNVoXDTMwMDIxNjE5MzMzNVow
+      FjEUMBIGA1UEAxMLRGF0YVNlcnZpY2UwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+      ggEKAoIBAQCkoWBf19IjV5NA0wBF12R4E4q4BhU7awLm9uJLdqhrt7fpPZxA6w9S
+      Gsv3rXGpXiBC/NWMp7Mb4+dbIITdcbPhdMzFC7vmdqUAnEqPQv4Nf46+LBnyCCkg
+      aqpGWZSiTT9V1Cgp5viMRm/eoFb8uQArrpT3jtzRhJi1HlLy/kYm9lZIIj6D9/6b
+      114GGtWEe7oa3a6lRwkGx9ffeX0VKX8kbcT/6YSe3pgSD5uhlVYVoMZlWjEM+oFO
+      5mp9HbX8o0Uor66gDj9d3PpFwEfNGjsNOPlnOQwL+Yy8XNuIY2AsdNMFzVYBMP7E
+      I3GgQpCQleyPRPQg1lvcNKWG/M5t5tvLAgMBAAGjgewwgekwHwYDVR0jBBgwFoAU
+      Kq7Wt0VUivNZ+MR+HOOj1CVRBMQwgaYGA1UdEQSBnjCBm4Ifc2FuZHktY2VsZXN0
+      aWFsLmVjcy5sYWIuZW1jLmNvbYcECvNWQoIfcHJvdm8tY2VsZXN0aWFsLmVjcy5s
+      YWIuZW1jLmNvbYcECvNWQIIfb2dkZW4tY2VsZXN0aWFsLmVjcy5sYWIuZW1jLmNv
+      bYcECvNWRoIeb3JlbS1jZWxlc3RpYWwuZWNzLmxhYi5lbWMuY29thwQK81ZEMB0G
+      A1UdDgQWBBQqrta3RVSK81n4xH4c46PUJVEExDANBgkqhkiG9w0BAQsFAAOCAQEA
+      l0GNe3hOPNm7NlD8np+LYazUng5G+vQZ26wfX5GvYfywKip+OaYpvp8DmtPWx/51
+      iP6A5QR3obFqlc4ntRSjfTq1Z8lYK8KlJ6JqvtgVBd28KEjn+Dpnb+wERGB7cJ79
+      z4Rzxkj7HG1FrYbcmUft5DUFUsAEtX1LMheR2HK8PmHerD8xUOsBzcQms+UoIms0
+      86Ku9VFS6ikXTI83Q1ja8batgaaSP0vOD1I+ISho/pwPTJF6/j6gzgVcpPiGKtgY
+      yvGg5L8BUfhNLEOWmAPMSRHQUNPJVFlUBuq/u1DHBDf4SBE+GAH6GwPEO6kE57sz
+      /b9eo74I0660XCqYYUaTHQ==
+      -----END CERTIFICATE-----
+    internalCa: |-
+      -----BEGIN CERTIFICATE-----
+      MIIDbTCCAlWgAwIBAgIUOgtNlun2VkJR+Grk7dTs37IIAdAwDQYJKoZIhvcNAQEL
+      BQAwRjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAlJJMRMwEQYDVQQHDApDdW1iZXJs
+      YW5kMRUwEwYDVQQKDAxDaHJpcyBCIEluYy4wHhcNMjIwMzIxMjAzOTQ5WhcNMzIw
+      MzE4MjAzOTQ5WjBGMQswCQYDVQQGEwJVUzELMAkGA1UECAwCUkkxEzARBgNVBAcM
+      CkN1bWJlcmxhbmQxFTATBgNVBAoMDENocmlzIEIgSW5jLjCCASIwDQYJKoZIhvcN
+      AQEBBQADggEPADCCAQoCggEBANVfqc/1OqceLX8LBok1PhY13pctLQvFJ1K0/s8Q
+      lt8esi3UoDJPHmPAGcrPB8Vpbe//+QRUyRKkjzCEC8QyfYERHl657fCUbZQGfgew
+      ngW4FZBoROWKT/WxdNj0jWxLlWev+OFQ6gGJ5GNYrqBTL8dT3ZDGMFZaAetgWCoB
+      yAXg7oEH8LZJafMpINIFa0u0tBlIkk/qLwTX4HpB7dwevgO4BJnJXFKjrH//1+np
+      Ahrgzsn2r7s5uetTetcyFcoi05x2lgbJQgJ+gu/WtptbSYyR0ffUzDuQyUFbbhJK
+      GqzmPysr54GNNHM1PRMV9ysnSfrwFGqnkqa2o+NC+6JKsCsCAwEAAaNTMFEwHQYD
+      VR0OBBYEFDSieW2IBtptlspQPjuFvSogRlKKMB8GA1UdIwQYMBaAFDSieW2IBtpt
+      lspQPjuFvSogRlKKMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+      ALHckIgYisC2SLn9UJThFVPl05J2583yZPTO9vjYfgYEMQOMbujHO8kDFNxdppzR
+      A3dN2X3GXzm2nfBKfxE6GVb6aivZrEvkYjR+VmUcLUVoMXIHWeDIuy1bhbdadyHu
+      hWke71z7bC88epr3AjiZy35DBKJNT9tTjSwDBTgUREBMYKfPaCfAS2sXqEI6lBQZ
+      17DbE1/mVmQPTId7+4LzJUckKTgxof3Z2bksKCok3JVkrOW2LaKgzUs5aaMVZGtl
+      Dx6tNEMk1dJ4Y98fTVXD9NFUFx6tJj15JygSl9extGKW/OSfbrXunHadluAEUmDG
+      v6G4q8tt7v2Dj/59v2s9M0w=
+      -----END CERTIFICATE-----
+ 
+pravega-cluster:
+  pravega_externalAccess:
+    enabled: true
+    type: LoadBalancer
+  pravega_replicas:
+    controller: 1
+    segment_store: 1
+  pravega_container_count: 8  #8 containers per segmentstore
+
+nfs-client-provisioner:
+  nfs:
+    # DNS server 10.247.114.6 and 10.249.253.60 resolves this
+    server: shared-isilon.lab176.local
+    path: /ifs/shared/summit
+    mountOptions:
+       - nfsvers=4.0
+       - sec=sys
+       - nolock
+  storageClass:
+    archiveOnDelete: "false"
+
+
+# for external-dns and cert-manager credentials
+# replace <aws_access_key_id> with your aws account access key and
+# replace <aws_secret_access_key> with your aws account access key
+# please contact kartik.vandra@dell.com to get aws access
+external-dns:
+  provider: coredns
+  coredns:
+    etcdEndpoints: "http://10.243.86.17:2379"
+    extraArgs: ['--source=ingress','--source=service','--provider=coredns','--log-level=debug']
+  rbac:
+    create: true
+    apiVersion: v1
+  registry: "txt"
+  policy: sync
+  domainFilters: [sm.sdp.hop.lab.emc.com]
+  logLevel: debug
+
+
+cert-manager-resources:
+  verifyCertificateIssuing:
+    skip: true
+  certManagerSecrets:
+  - name: aws-secret-access-key
+    value: <aws_secret_access_key>
+  internalCASecrets:
+  - name: tls.crt
+    value: |
+      -----BEGIN CERTIFICATE-----
+      MIIDbTCCAlWgAwIBAgIUOgtNlun2VkJR+Grk7dTs37IIAdAwDQYJKoZIhvcNAQEL
+      BQAwRjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAlJJMRMwEQYDVQQHDApDdW1iZXJs
+      YW5kMRUwEwYDVQQKDAxDaHJpcyBCIEluYy4wHhcNMjIwMzIxMjAzOTQ5WhcNMzIw
+      MzE4MjAzOTQ5WjBGMQswCQYDVQQGEwJVUzELMAkGA1UECAwCUkkxEzARBgNVBAcM
+      CkN1bWJlcmxhbmQxFTATBgNVBAoMDENocmlzIEIgSW5jLjCCASIwDQYJKoZIhvcN
+      AQEBBQADggEPADCCAQoCggEBANVfqc/1OqceLX8LBok1PhY13pctLQvFJ1K0/s8Q
+      lt8esi3UoDJPHmPAGcrPB8Vpbe//+QRUyRKkjzCEC8QyfYERHl657fCUbZQGfgew
+      ngW4FZBoROWKT/WxdNj0jWxLlWev+OFQ6gGJ5GNYrqBTL8dT3ZDGMFZaAetgWCoB
+      yAXg7oEH8LZJafMpINIFa0u0tBlIkk/qLwTX4HpB7dwevgO4BJnJXFKjrH//1+np
+      Ahrgzsn2r7s5uetTetcyFcoi05x2lgbJQgJ+gu/WtptbSYyR0ffUzDuQyUFbbhJK
+      GqzmPysr54GNNHM1PRMV9ysnSfrwFGqnkqa2o+NC+6JKsCsCAwEAAaNTMFEwHQYD
+      VR0OBBYEFDSieW2IBtptlspQPjuFvSogRlKKMB8GA1UdIwQYMBaAFDSieW2IBtpt
+      lspQPjuFvSogRlKKMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+      ALHckIgYisC2SLn9UJThFVPl05J2583yZPTO9vjYfgYEMQOMbujHO8kDFNxdppzR
+      A3dN2X3GXzm2nfBKfxE6GVb6aivZrEvkYjR+VmUcLUVoMXIHWeDIuy1bhbdadyHu
+      hWke71z7bC88epr3AjiZy35DBKJNT9tTjSwDBTgUREBMYKfPaCfAS2sXqEI6lBQZ
+      17DbE1/mVmQPTId7+4LzJUckKTgxof3Z2bksKCok3JVkrOW2LaKgzUs5aaMVZGtl
+      Dx6tNEMk1dJ4Y98fTVXD9NFUFx6tJj15JygSl9extGKW/OSfbrXunHadluAEUmDG
+      v6G4q8tt7v2Dj/59v2s9M0w=
+      -----END CERTIFICATE-----
+  - name: tls.key
+    value: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEogIBAAKCAQEA1V+pz/U6px4tfwsGiTU+FjXely0tC8UnUrT+zxCW3x6yLdSg
+      Mk8eY8AZys8HxWlt7//5BFTJEqSPMIQLxDJ9gREeXrnt8JRtlAZ+B7CeBbgVkGhE
+      5YpP9bF02PSNbEuVZ6/44VDqAYnkY1iuoFMvx1PdkMYwVloB62BYKgHIBeDugQfw
+      tklp8ykg0gVrS7S0GUiST+ovBNfgekHt3B6+A7gEmclcUqOsf//X6ekCGuDOyfav
+      uzm561N61zIVyiLTnHaWBslCAn6C79a2m1tJjJHR99TMO5DJQVtuEkoarOY/Kyvn
+      gY00czU9ExX3KydJ+vAUaqeSpraj40L7okqwKwIDAQABAoIBAEmGcGaHk1F49aZ8
+      byEipqVSpMQlPgt7QWSfl9pUVhjGZBGk3hrX5pnq3ThkhMIC5W45H17dtHfnGqxW
+      JBPUbijmdDeiDBrFmsjSP+V4d8tytoOPWoZaVdlM7/2+r2js1qvnGHTTw/8JvBh7
+      u5jlcWZXQNcdZBStaVHpXhgDiyBy06R+Rn3q0e61wIvzOilVjuWmBgOQ8bfCEYWK
+      CpZC3IORjWEjEXZ9tRpG6dy+pA3t0kdPzsWhEaiELjFI3nE1+Sh3XNbib28HpEQ9
+      DDPt0CYAo4gYScEZ7lP7qNNbKaQ0Vaeiy7tr+mRavixGNtAWSEujruiUtweHvFeL
+      Z6TOE9ECgYEA8+uCUIukWRUwz1M2wC1JB5TqCSxFPp06BkT8qVtxapjtzVgUOYRD
+      d1wQNReeUxcxXSXrSpP0StfQcPi8urIKeD9tw6wkN7eryYquGxw6L2OgF9JSeMiS
+      z0sFc/aL/U/IKW+lCvCSSinqbJ41qOi3ge9v8/MWAwpeSGr1ktzZKdkCgYEA3/Dh
+      ITOejKZWMEL9cHi29vgk8+27Hs5kDvhYQP8USv1aDvX6b+4AT1lrQMq8fNXA4FLY
+      E4ePiKekBKYvnr8I/hMm8BjKfZite3ILRrn/LDtG4135vZ4MtVLwf+gSzkHa1Iot
+      HzgkvFOYWKWGl4ghCZoHG/a0pnMs9A9kFDyTg6MCgYBht7TCLd9ObOXb+RtTDBFY
+      vzivKhQnjHdlcZfDBUY/jTqfbCzWCf25QKGhk2+zG/SDu6AyhWl13lW8HHoHVTJK
+      kCaaIEl2JNfmau9rHvjUaVYGlRTDHJ9r+kMZ/OiCN8cZioeVBWGl4nruvscCfxCd
+      Nl4kXfswhqPU4Ty2dFFvqQKBgA2tpeKkR4PpyQvrm5VaGjrdj0xC8hIAo0Xyz1kw
+      +2lVLkIJrkFV9TjjilSLzZWGbOCGzuHqfs7nBnKuP+xfWMpEGzXBHeUsBTSsE5o/
+      VCG8gSj0HYQCel488amuYC+vABHJWtY0VLIYHQ8VFTJ+Qx5WBSclG4WrNUy2//Lo
+      fE4nAoGAAptYVEPDVFHfx3KQhUi1z00IIGPIqwYKzXi/prlMBm+D0Wy2tnidUAEl
+      EiFW1KRj64uRRC7TKtX3Jz6odkk+RJfF+CfI973sQa+XD9NlyNG6o22+fjwu6E2r
+      YOr/Gt44cLc7X+RIMRSAfEMJjzDw1SvRkvYx5i9zpBN2qdGRTIE=
+      -----END RSA PRIVATE KEY-----
+  clusterIssuer:
+    name: letsencrypt-production
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: subba.gaddamadugu@dell.com
+    acmeSecretKey: issuer-letsencrypt-dns-auth-secret
+    solvers:
+    - dns01:
+        route53:
+          # hosted zone id taken from route53 “Hosted Zone Details”
+          hostedZoneID: Z1NT3ZOTA7Y70C
+          region: us-west-2
+          accessKeyID: <aws_access_key_id>
+          secretAccessKeySecretRef:
+            name: cert-manager-secrets
+            key: aws-secret-access-key
+
+cert-manager:
+  ingressShim:
+    defaultIssuerName: letsencrypt-production
+    defaultIssuerKind: ClusterIssuer
+
+  extraArgs: ['--dns01-recursive-nameservers-only=true']
+
+keycloak:
+  dev:
+    sslRequiredBypass: true
+  egress:
+    enabled: true
+    trusted_certs_yaml:
+      certs:
+        - cn: "*.summit.local"
+          pemdata: |
+            -----BEGIN CERTIFICATE-----
+            MIIDizCCAnOgAwIBAgIUG7J2Bh/VheY+FZU5I7RmuqWTjdYwDQYJKoZIhvcNAQEL
+            BQAwHzELMAkGA1UEBhMCVVMxEDAOBgNVBAoMB1Bpdm90YWwwHhcNMjAwOTAyMDg0
+            NzMwWhcNMjIwOTAyMDg0NzMwWjA4MQswCQYDVQQGEwJVUzEQMA4GA1UECgwHUGl2
+            b3RhbDEXMBUGA1UEAwwOKi5zdW1taXQubG9jYWwwggEiMA0GCSqGSIb3DQEBAQUA
+            A4IBDwAwggEKAoIBAQDAZX08LDi6zQQLElZers6JkN/KQDlgDf7RTnXxBA0xqZZ/
+            s6n2eo21S01rimKl+8fWRnaTKiMrhUQAcDxTmla3v731TCxoMrq/leyh0Erpk7YE
+            LRfeEB/XzpNQC3PnZZSuHbUg1blAsBgvYmOIt9k25EwoGR6f8xG/Rr+LfYaCbvLD
+            jcBV7bYM/SB0S08fIE0DcSn6Cbejx6JoRZyn53QenQ+CxPdyg3BPTwi5COWd1NOe
+            043fsZSi/3PpV8Ddg0LtoNqDZ9RX3/CYBUEHczeMpO+phvYgearwq6f1zgws+ArF
+            Mr+164OgRV0+RhfS7VmC3NQoFhxHtpvCSA5gX8kpAgMBAAGjgaUwgaIwHQYDVR0O
+            BBYEFPxtI8UrSkTHGEPjhVsAt4eVy8j/MB8GA1UdIwQYMBaAFFI7Zs4JjAjAVpEo
+            2Y+1VSzCW0zMMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAOBgNVHQ8B
+            Af8EBAMCB4AwMQYDVR0RBCowKIIOKi5zdW1taXQubG9jYWyCFioucGtzLWFwaS5z
+            dW1taXQubG9jYWwwDQYJKoZIhvcNAQELBQADggEBAFg0pSk/dOoiRPvoMuGRpxGe
+            D3ay4a72i0Qn6o51Toj2wNAz9tv9NjryWOtGcA1Cj4Vu7irw8zIZ84jUICETHFcW
+            OTg+Zms+IfqNT2nU7lc7eUhjHC5Slmh8LqzEpc3pTwzmZkAxJrnfYRTzSOzmEqCx
+            n7GfxqhjxqLoSlnaDvVFqvx4wY0olhDEg/dyl3vOsXPWARAtWS+ck9xMbdSd5Je4
+            xhuP9R4U1mZ7k8zVLm3PkUX9rw1vcqF9uIfDzLo7kdlPONaeafQ9bDNCPJgL0Efo
+            RrXOozS2/yznj5oCAa222sQ6xf9Izv+SwUkkokq696Tz8VeBzMjOEUZmoyOK4f4=
+            -----END CERTIFICATE-----
+
+sdp-serviceability:
+  kahm:
+    postgresql-ha:
+      pgpool:
+        adminPassword: Dg5UPXI4k9
+
+  dellemc-streamingdata-license:
+    licensefile: |-
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!--Copyright (c) 2010-2020 EMC Inc. All Rights Reserved.--><EMCLicense version="1.0">
+          <ActivationInfo>
+              <ActivationId>4471529</ActivationId>
+              <ActivationDate>May 02, 2022 07:53:23 PM</ActivationDate>
+              <ActivatedBy>James Finger</ActivatedBy>
+              <ActivationType>ACTIVATE</ActivationType>
+              <ActivationCompany>ACTIVATED TO EMC</ActivationCompany>
+              <ActivationSite>ACTIVATED TO License Site Number: PTA12FEB2008544589</ActivationSite>
+              <Issuer>EMC</Issuer>
+              <IssueDate>02-May-2022</IssueDate>
+          </ActivationInfo>
+          <MachineInfo>
+              <MachineName>JIM_SDP1</MachineName>
+              <SoftwareIds>
+                  <SoftwareId plc="STRM">ELMSTR0522SVS9</SoftwareId>
+              </SoftwareIds>
+              <LockingIds/>
+          </MachineInfo>
+          <LicenseKeys>
+              <LicenseKey version="1.0">
+                  <FeatureCode>STRM_CORES</FeatureCode>
+                  <FeatureName>Streaming Platform Cores</FeatureName>
+                  <LicenseType>SUBSCRIPTION</LicenseType>
+                  <CustomProperties>
+                      <CustomProperty>
+                          <key>PLC</key>
+                          <value>STRM</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODUCT_LINE</key>
+                          <value>Streaming Data Platform</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>FEATURE_NAME</key>
+                          <value>Streaming Platform Cores</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_CODE</key>
+                          <value>ZC</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>UOM_NAME</key>
+                          <value>Individual CPU Core</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>PRODSHORTNAME</key>
+                          <value>STREAMINGDATA</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>QTY</key>
+                          <value>1</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>TYPE</key>
+                          <value>SUBSCRIPTION</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>START_DATE</key>
+                          <value>02-May-2022</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>END_DATE</key>
+                          <value>02-May-2025</value>
+                      </CustomProperty>
+                      <CustomProperty>
+                          <key>GRACE_PERIOD</key>
+                          <value>16-May-2025</value>
+                      </CustomProperty>
+                  </CustomProperties>
+              </LicenseKey>
+          </LicenseKeys>
+      <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2002/06/xmldsig-filter2"><XPath xmlns="http://www.w3.org/2002/06/xmldsig-filter2" Filter="intersect">//ActivationInfo|//MachineInfo|//LicenseKeys</XPath></Transform></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>aQuH7fEQNoHhBSQH+JS+oItDvP2cYMYvfKGd9pQv6kkSpwZZt1a3iMSuGuDKRS2j7pYPqi5wcMU5&#13;
+      s1Ck3PTNDQ==</DigestValue></Reference></SignedInfo><SignatureValue>SjtvTyZxVKDB5s8VyNDSiQh9s844+9NEGySQAlUtUh2fASPeSi4qKfNaxjOvRGzORXyLmWbjlkEG&#13;
+      Cl3Lno7XDBZcwUnGxxnJOvyPVyMY+GucYv7RH2pKhNYbORAB5LVhE8xvAaXLg5GoC+TNHh1sDbDI&#13;
+      hkzjtg7Znpibsh6ESpLqGKoY9P8/kis6P/i1rMJlIk+KK8IGryxlIF1nZGkVxWz0R5E2j5+BTZP1&#13;
+      zWK75/ioboy3L3EH5ahzuB+IIRRLvMD0KCsDBkBY78QKjHHRPtLjKGSQfloIuInICRt1v/FfsAMC&#13;
+      pe69ztK2fogYvgtJVbUojHXG17GrsocEqmqC5A==</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>nrou2Rji7a4aFE6Bjf4+RpuiL7oFxLpFb043whp8w10fSgh75LYyGkJ9B95fSotHEOQlou5soYjV&#13;
+      rOBjioXGWuVybMid7tF5lyNs3zWrXkVcIvrcmwNTIrs+chPmntu5qDP89A1vslRGzbHrBHQdzX5P&#13;
+      lN5wcXVlXoU3E1LUsU4Lzk/GXX1FLCodbGDOVMN6/WNHJRaDts/tKacJuFhyuNc90fjyQkhb4buv&#13;
+      P2nJDn8P14kpvkc15HNsm3/Wa+jsJUBfLeZCJOOvZbUiB7n/MSDPgNUBboUGxXacTgYZyUSzk1jR&#13;
+      7qwzIrdcWq/vIgAsWBVr9DhckLagmq+Rq7xhBw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue></KeyInfo></Signature></EMCLicense>
+

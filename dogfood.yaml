@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dogfood
+  namespace: aaa
+spec:
+  manualSelector: true
+  selector:
+    matchLabels:
+      app: dogfood
+  parallelism: 1
+  template:
+    metadata:
+      name: dogfood
+      labels:
+        app: dogfood
+    spec:
+      serviceAccountName: aaa-psearch
+      restartPolicy: Never
+      containers:
+        - name: dogfood
+          image: devops-repo.isus.emc.com:8116/miy/psearch/dogfoodcq
+          command:  [ "/bin/bash", "-c",
+                      "bzip2 -d /home/data/nyc_taxi.json.bz2;java -jar dogfoodRefined-0.0.1-SNAPSHOT.jar --streamName=nametp --indexName=nametp --eventCount=0 --continueTime=240000 --sleepInterval=3 --segmentCount=2 --threadNum=1 --enableQuery=false --dataSource=fileSystem:/home/data/nyc_taxi.json --mappingFile=/home/mapping/taxi.json --searchServerEndPoint=http://psearch-resthead-headless:9098;tail -f /dev/null;"
+          ]
+          env:
+            - name: REST_AUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rest-auth-secret
+                  key: username
+            - name: REST_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rest-auth-secret
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: psearch-indexworker-configmap
+            - configMapRef:
+                name: project-config
