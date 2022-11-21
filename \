@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dogfood
+  namespace:aaa
+spec:
+  template:
+    metadata:
+      name: dogfood
+    spec:
+      serviceAccountName: aaa-psearch
+      restartPolicy: Never
+      containers:
+      - name: dogfood
+        image: devops-repo.isus.emc.com:8116/psearch-test/dogfood:latest
+        command: ["/bin/bash", "-c", "sleep 1m ; (nohup java -Dlog4j.configurationFile=file:log4j2-so.xml -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -jar dogfood-1.0.0.jar /home/properties/dogfood.so.properties &); (nohup java -Dlog4j.configurationFile=file:log4j2-taxi.xml -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -jar dogfood-1.0.0.jar /home/properties/dogfood.taxi.properties &); tail -f /dev/null"]
+        envFrom:
+         - configMapRef:
+            name: psearch-indexworker-configmap
+         - configMapRef:
+            name: project-config
+        env:
+         - name: REST_AUTH_USER
+           valueFrom:
+             secretKeyRef:
+               name: rest-auth-secret
+               key: username
+         - name: REST_AUTH_PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: rest-auth-secret
+               key: password
