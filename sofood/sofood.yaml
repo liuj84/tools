@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sofood
+  namespace: aaa
+spec:
+  manualSelector: true
+  selector:
+    matchLabels:
+      app: sofood
+  parallelism: 1
+  template:
+    metadata:
+      name: sofood
+      labels:
+        app: sofood
+    spec:
+      serviceAccountName: aaa-psearch
+      volumes:
+        - name: sofood-pv-storage
+          persistentVolumeClaim:
+            claimName: sofood-pv-claim
+      restartPolicy: Never
+      containers:
+        - name: sofood
+          image: devops-repo.isus.emc.com:8116/miy/psearch/dogfoodcq:1.12.0
+          command:  [ "/bin/bash", "-c",
+          "bzip2 -d /home/data/so.json.bz2;java -Djavax.net.ssl.trustStore=/mnt/sofood-ssl/cacerts -jar dogfoodRefined-0.0.1-SNAPSHOT.jar --streamName=solong3 --indexName=solong3 --eventCount=10 --continueTime=2500000 --sleepInterval=1 --threadNum=5 --segmentCount=2 --dataSource=IDRACFLAT --mappingFile=/home/mapping/idrac-flat.json --searchServerEndPoint=http://psearch-resthead-headless:9098 --enableQuery=false --pravegaEndPoint=tls://pravega-controller.doc-samson.sm.sdp.hop.lab.emc.com:443; tail -f /dev/null;"
+          ]
+          envFrom:
+            - configMapRef:
+                name: psearch-indexworker-configmap
+            - configMapRef:
+                name: project-config
+          env:
+            - name: REST_AUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rest-auth-secret
+                  key: username
+            - name: REST_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rest-auth-secret
+                  key: password
+          volumeMounts:
+            - mountPath: "/mnt/sofood-ssl"
+              name: sofood-pv-storage
